@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Aurible.Services; // Ajoutez cette ligne pour les services
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,11 +19,14 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Optionnel : Ajouter authentification JWT si nécessaire
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
+// Ajouter le service d'authentification
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// Configurer l'authentification JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -26,12 +34,12 @@ builder.Services.AddAuthentication("Bearer")
             ValidateIssuerSigningKey = true,
             ValidIssuer = "ton_issuer",
             ValidAudience = "ton_audience",
-            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
         };
     });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Ajouter Swagger pour la documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -66,12 +74,8 @@ else
 }
 
 app.UseHttpsRedirection();
-
-// Activer CORS
 app.UseCors("AllowAllOrigins");
-
-// Optionnel : Activer l'authentification et l'autorisation JWT
-app.UseAuthentication(); // JWT, si nécessaire
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
