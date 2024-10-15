@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Aurible",
-        Version = "V0.0.0.0.0.0.1",
+        Version = "V0.0.1",
         Description = "A simple Aurible app",
     });
 });
@@ -51,7 +51,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.0.0.0.0.1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
         c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root.
     });
 }
@@ -60,7 +60,7 @@ else
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.0.0.0.0.1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
         c.RoutePrefix = "api-docs"; // Change the route to "/api-docs" in production for better security.
     });
 }
