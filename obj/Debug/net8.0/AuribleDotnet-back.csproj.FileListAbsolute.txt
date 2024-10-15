@@ -1,0 +1,15 @@
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\AuribleDotnet-back.exe
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\AuribleDotnet-back.deps.json
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\AuribleDotnet-back.runtimeconfig.json
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\AuribleDotnet-back.dll
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\AuribleDotnet-back.pdb
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.AssemblyInfoInputs.cache
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.AssemblyInfo.cs
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.csproj.CoreCompileInputs.cache
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.sourcelink.json
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.dll
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\refint\AuribleDotnet-back.dll
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.pdb
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\AuribleDotnet-back.genruntimeconfig.cache
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\ref\AuribleDotnet-back.dll
