@@ -1,3 +1,6 @@
+using AuribleDotnet_back.Interface;
+using AuribleDotnet_back.Service.AuthServices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,24 +17,32 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+builder.Services.AddScoped<IJwtTokenService, JWTService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.ConfigurationAuth(builder.Configuration);
+// builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration.GetSection("AzureAd"));
 // Optionnel : Ajouter authentification JWT si nécessaire
-builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer("Bearer", options =>
-    {
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = "ton_issuer",
-            ValidAudience = "ton_audience",
-            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
-        };
-    });
+// builder.Services.AddAuthentication("Bearer")
+//     .AddJwtBearer("Bearer", options =>
+//     {
+//         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//         {
+//             ValidateIssuer = true,
+//             ValidateAudience = true,
+//             ValidateLifetime = true,
+//             ValidateIssuerSigningKey = true,
+//             ValidIssuer = "ton_issuer",
+//             ValidAudience = "ton_audience",
+//             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+//                 System.Text.Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
+//         };
+//     });
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
