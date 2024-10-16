@@ -13,7 +13,7 @@ namespace Aurible.Services
             return _books;
         }
 
-        public Book GetBookById(int id)
+        public Book? GetBookById(int id)
         {
             return _books.FirstOrDefault(b => b.Id == id);
         }
@@ -31,7 +31,6 @@ namespace Aurible.Services
             {
                 existingBook.Title = book.Title;
                 existingBook.Author = book.Author;
-                existingBook.Price = book.Price;
             }
         }
 

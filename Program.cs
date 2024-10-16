@@ -1,43 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Aurible.Services; // Ajoutez cette ligne pour les services
+using Aurible.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
-// Add CORS services
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllOrigins", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
-});
-
-// Ajouter le service d'authentification
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-// Configurer l'authentification JWT
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = "ton_issuer",
-            ValidAudience = "ton_audience",
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
-        };
-    });
 
 // Ajouter Swagger pour la documentation
 builder.Services.AddEndpointsApiExplorer();
@@ -54,9 +21,6 @@ builder.Services.AddSwaggerGen(options =>
 
 //Services
 builder.Services.AddScoped<IBookService, BookService>();
-
-builder.Services.AddControllers();
-
 
 var app = builder.Build();
 

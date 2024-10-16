@@ -46,13 +46,9 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+            "Microsoft.AspNetCore.Authentication.AzureAD.UI": {
               "target": "Package",
-              "version": "[8.0.10, )"
-            },
-            "Microsoft.AspNetCore.Mvc": {
-              "target": "Package",
-              "version": "[2.2.0, )"
+              "version": "[6.0.35, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
