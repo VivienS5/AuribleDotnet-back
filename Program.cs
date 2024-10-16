@@ -2,6 +2,8 @@ using System.Text;
 using Aurible.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using AuribleDotnet_back.Interface;
+using AuribleDotnet_back.Service.AuthServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,42 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Health Checks
 builder.Services.AddHealthChecks();
+
+builder.Services.AddScoped<IJwtTokenService, JWTService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.ConfigurationAuth(builder.Configuration);
+// builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration.GetSection("AzureAd"));
+// Optionnel : Ajouter authentification JWT si nécessaire
+// builder.Services.AddAuthentication("Bearer")
+//     .AddJwtBearer("Bearer", options =>
+//     {
+//         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//         {
+//             ValidateIssuer = true,
+//             ValidateAudience = true,
+//             ValidateLifetime = true,
+//             ValidateIssuerSigningKey = true,
+//             ValidIssuer = "ton_issuer",
+//             ValidAudience = "ton_audience",
+//             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+//                 System.Text.Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
+//         };
+//     });
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Aurible",
+        Version = "V0.0.0.0.0.0.1",
+        Description = "A simple Aurible app",
+    });
+});
 
 var app = builder.Build();
 
