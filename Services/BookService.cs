@@ -17,30 +17,5 @@ namespace Aurible.Services
         {
             return _books.FirstOrDefault(b => b.Id == id);
         }
-
-        public void AddBook(Book book)
-        {
-            book.Id = _books.Count + 1; // Simple génération d'ID
-            _books.Add(book);
-        }
-
-        public void UpdateBook(Book book)
-        {
-            var existingBook = GetBookById(book.Id);
-            if (existingBook != null)
-            {
-                existingBook.Title = book.Title;
-                existingBook.Author = book.Author;
-            }
-        }
-
-        public void DeleteBook(int id)
-        {
-            var book = GetBookById(id);
-            if (book != null)
-            {
-                _books.Remove(book);
-            }
-        }
     }
 }

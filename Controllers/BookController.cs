@@ -4,7 +4,7 @@ using Aurible.Models;
 using Aurible.Services;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("/[controller]")]
 public class BookController : ControllerBase
 {
     private readonly IBookService _bookService;
@@ -27,29 +27,5 @@ public class BookController : ControllerBase
         if (book == null)
             return NotFound();
         return Ok(book);
-    }
-
-    [HttpPost]
-    public IActionResult AddBook(Book book)
-    {
-        _bookService.AddBook(book);
-        return CreatedAtAction(nameof(GetBookById), new { id = book.Id }, book);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult UpdateBook(int id, Book book)
-    {
-        if (id != book.Id)
-            return BadRequest();
-        
-        _bookService.UpdateBook(book);
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult DeleteBook(int id)
-    {
-        _bookService.DeleteBook(id);
-        return NoContent();
     }
 }
