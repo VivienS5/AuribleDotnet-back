@@ -1,6 +1,6 @@
 namespace AuribleDotnet_back;
 
-public class WeatherForecast
+public class Exemple
 {
     public DateOnly Date { get; set; }
 

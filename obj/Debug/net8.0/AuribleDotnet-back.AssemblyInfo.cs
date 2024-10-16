@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuribleDotnet-back")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c3ba3217b66dab5f4b0d0e0346813bdb0b23a6a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0bdda0d589e034fd126d684fe594c689cb093ca2")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuribleDotnet-back")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuribleDotnet-back")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
