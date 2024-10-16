@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj": {}
+    "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj": {
+    "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
+        "projectUniqueName": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
         "projectName": "AuribleDotnet-back",
-        "projectPath": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
+        "projectPath": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
         "packagesPath": "C:\\Users\\HiDao\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\obj\\",
+        "outputPath": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HiDao\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -49,6 +49,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Microsoft.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[2.2.0, )"
             },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
