@@ -1,21 +1,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using Aurible.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aurible.Services
 {
     public class BookService : IBookService
     {
-        private static List<Book> _books = new List<Book>();
+        private readonly ApplicationDbContext _context;
+
+        public BookService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Book> GetAllBooks()
         {
-            return _books;
+            return _context.Book.ToList(); // Récupère tous les livres de la base de données
         }
 
         public Book? GetBookById(int id)
         {
-            return _books.FirstOrDefault(b => b.Id == id);
+            return _context.Book.FirstOrDefault(b => b.Id == id);
         }
     }
 }
