@@ -1,12 +1,13 @@
 using System.Text;
 using Aurible.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Ajouter les services au conteneur
 builder.Services.AddControllers();
 
-// Ajouter Swagger pour la documentation
+// Ajouter Swagger pour la documentation de l'API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -18,20 +19,34 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Configuration CORS - Autoriser toutes les origines
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
-//Services
+// Ajouter les services de l'application
 builder.Services.AddScoped<IBookService, BookService>();
+
+// Configurer le DbContext pour utiliser PostgreSQL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurer le pipeline de requêtes HTTP
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
-        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root.
+        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root dans l'environnement de développement
     });
 }
 else
@@ -40,15 +55,18 @@ else
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
-        c.RoutePrefix = "api-docs"; // Change the route to "/api-docs" in production for better security.
+        c.RoutePrefix = "api-docs"; // Changer le chemin pour "/api-docs" en production
     });
 }
 
 app.UseHttpsRedirection();
+
+// Appliquer la politique CORS
 app.UseCors("AllowAllOrigins");
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapControllers();
+app.UseAuthentication(); // Si vous utilisez une authentification
+app.UseAuthorization();  // Nécessaire pour les contrôleurs
 
-app.Run();
+app.MapControllers(); // Mapper les contrôleurs
+
+app.Run(); // Lancer l'application

@@ -24,12 +24,12 @@ namespace Aurible.Services
             var existingBook = GetBookById(book.Id);
             if (existingBook != null)
             {
-                existingBook.Title = book.Title;
-                existingBook.Resume = book.Resume;
-                existingBook.CoverURL = book.CoverURL;
-                existingBook.AudioPath = book.AudioPath;
+                existingBook.title = book.title;
+                existingBook.resume = book.resume;
+                existingBook.coverURL = book.coverURL;
+                existingBook.audioPath = book.audioPath;
                 existingBook.maxPage = book.maxPage;
-                existingBook.Author = book.Author;
+                existingBook.author = book.author;
             }
         }
 
