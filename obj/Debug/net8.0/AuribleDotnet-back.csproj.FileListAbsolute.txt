@@ -100,3 +100,5 @@ D:\Code\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\staticwebassets\msbuil
 D:\Code\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.AuribleDotnet-back.props
 D:\Code\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\staticwebassets.pack.json
 D:\Code\AuribleDotnet\AuribleDotnet-back\obj\Debug\net8.0\scopedcss\bundle\AuribleDotnet-back.styles.css
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.AzureAD.UI.dll
+C:\Users\HiDao\Desktop\5e\AuribleDotnet\AuribleDotnet-back\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll

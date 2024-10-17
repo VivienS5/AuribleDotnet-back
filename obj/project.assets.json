@@ -1877,11 +1877,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
+      "projectUniqueName": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
       "projectName": "AuribleDotnet-back",
-      "projectPath": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
+      "projectPath": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\AuribleDotnet-back.csproj",
       "packagesPath": "C:\\Users\\HiDao\\.nuget\\packages\\",
-      "outputPath": "D:\\Code\\AuribleDotnet\\AuribleDotnet-back\\obj\\",
+      "outputPath": "C:\\Users\\HiDao\\Desktop\\5e\\AuribleDotnet\\AuribleDotnet-back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HiDao\\AppData\\Roaming\\NuGet\\NuGet.Config",
