@@ -25,6 +25,10 @@ namespace Aurible.Services
             if (existingBook != null)
             {
                 existingBook.Title = book.Title;
+                existingBook.Resume = book.Resume;
+                existingBook.CoverURL = book.CoverURL;
+                existingBook.AudioPath = book.AudioPath;
+                existingBook.maxPage = book.maxPage;
                 existingBook.Author = book.Author;
             }
         }
