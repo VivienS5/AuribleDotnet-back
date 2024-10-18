@@ -23,11 +23,11 @@ namespace AuribleDotnet_back.Migrations
 
             modelBuilder.Entity("Aurible.Models.Book", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("idBook")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("idBook"));
 
                     b.Property<string>("audioPath")
                         .HasColumnType("text");
@@ -47,39 +47,34 @@ namespace AuribleDotnet_back.Migrations
                     b.Property<string>("title")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("idBook");
 
                     b.ToTable("Book");
                 });
 
             modelBuilder.Entity("Aurible.Models.Chapter", b =>
                 {
-                    b.Property<int>("IdChapter")
+                    b.Property<int>("idChapter")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdChapter"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("idChapter"));
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookidBook")
                         .HasColumnType("integer");
 
                     b.Property<string>("chapterTitle")
-                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("idBook_FK")
-                        .HasColumnType("integer");
 
                     b.Property<int>("page")
                         .HasColumnType("integer");
 
                     b.Property<TimeSpan[]>("timecode")
-                        .IsRequired()
                         .HasColumnType("interval[]");
 
-                    b.HasKey("IdChapter");
+                    b.HasKey("idChapter");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("BookidBook");
 
                     b.ToTable("Chapter");
                 });
@@ -87,12 +82,16 @@ namespace AuribleDotnet_back.Migrations
             modelBuilder.Entity("Aurible.Models.Chapter", b =>
                 {
                     b.HasOne("Aurible.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Chapters")
+                        .HasForeignKey("BookidBook")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Aurible.Models.Book", b =>
+                {
+                    b.Navigation("Chapters");
                 });
 #pragma warning restore 612, 618
         }

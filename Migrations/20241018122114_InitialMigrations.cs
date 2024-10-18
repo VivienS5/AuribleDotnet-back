@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuribleDotnet_back.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace AuribleDotnet_back.Migrations
                 name: "Book",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
+                    idBook = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     title = table.Column<string>(type: "text", nullable: true),
                     resume = table.Column<string>(type: "text", nullable: true),
@@ -27,36 +27,35 @@ namespace AuribleDotnet_back.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Book", x => x.Id);
+                    table.PrimaryKey("PK_Book", x => x.idBook);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Chapter",
                 columns: table => new
                 {
-                    IdChapter = table.Column<int>(type: "integer", nullable: false)
+                    idChapter = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    chapterTitle = table.Column<string>(type: "text", nullable: false),
-                    timecode = table.Column<TimeSpan[]>(type: "interval[]", nullable: false),
+                    chapterTitle = table.Column<string>(type: "text", nullable: true),
+                    timecode = table.Column<TimeSpan[]>(type: "interval[]", nullable: true),
                     page = table.Column<int>(type: "integer", nullable: false),
-                    idBook_FK = table.Column<int>(type: "integer", nullable: false),
-                    BookId = table.Column<int>(type: "integer", nullable: false)
+                    BookidBook = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chapter", x => x.IdChapter);
+                    table.PrimaryKey("PK_Chapter", x => x.idChapter);
                     table.ForeignKey(
-                        name: "FK_Chapter_Book_BookId",
-                        column: x => x.BookId,
+                        name: "FK_Chapter_Book_BookidBook",
+                        column: x => x.BookidBook,
                         principalTable: "Book",
-                        principalColumn: "Id",
+                        principalColumn: "idBook",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chapter_BookId",
+                name: "IX_Chapter_BookidBook",
                 table: "Chapter",
-                column: "BookId");
+                column: "BookidBook");
         }
 
         /// <inheritdoc />

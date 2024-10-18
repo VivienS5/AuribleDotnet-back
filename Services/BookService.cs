@@ -21,7 +21,7 @@ namespace Aurible.Services
 
         public Book? GetBookById(int id)
         {
-            return _context.Book.FirstOrDefault(b => b.Id == id);
+            return _context.Book.FirstOrDefault(b => b.idBook == id);
         }
     }
 }

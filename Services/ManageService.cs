@@ -13,7 +13,7 @@ namespace Aurible.Services
 
         public Book? GetBookById(int id)
         {
-            return _context.Book.FirstOrDefault(b => b.Id == id);
+            return _context.Book.FirstOrDefault(b => b.idBook == id);
         }
 
     public void AddBook(BookDto bookDto)
@@ -35,7 +35,7 @@ namespace Aurible.Services
         public void UpdateBook(Book book)
         {
             // Vérifie si le livre existe déjà dans la base de données
-            var existingBook = GetBookById(book.Id);
+            var existingBook = GetBookById(book.idBook);
             if (existingBook != null)
             {
                         existingBook.title = book.title;

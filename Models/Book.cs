@@ -2,7 +2,7 @@ namespace Aurible.Models
 {
     public class Book
     {
-        public int Id { get; set; }
+        public int idBook { get; set; }
         public string? title { get; set; }
         public string? resume { get; set; }
         public string? coverURL { get; set; }
@@ -10,6 +10,6 @@ namespace Aurible.Models
         public int? maxPage { get; set; }
         public string? author { get; set; }
 
-        public ICollection<Chapter>? Chapters { get; set; }
+        public required ICollection<Chapter> Chapters { get; set; }
     }
 }
