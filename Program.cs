@@ -1,6 +1,7 @@
 using System.Text;
 using Aurible.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,11 @@ builder.Services.AddCors(options =>
 // Ajouter les services de l'application
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IManageService, ManageService>();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 // Configurer le DbContext pour utiliser PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
