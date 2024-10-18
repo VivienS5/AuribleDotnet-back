@@ -1,33 +1,61 @@
 
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace AuribleDotnet_back.Service.AuthServices{
     public static class AuthSettings
     {
         public static IServiceCollection ConfigurationAuth(this IServiceCollection service, IConfiguration config){
-            var jwtSettings = config.GetSection("JwtSettings");
-            service.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            var azureAd = config.GetSection("AzureAd");
+            service.AddDistributedMemoryCache();
+            service.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true; // Nécessaire pour les sessions
+            });
+            service.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Ne pas forcer HTTPS pour le développement
+            });
+            service.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddMicrosoftIdentityWebApp(config.GetSection("AzureAd"));
-            service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                options.TokenValidationParameters = new TokenValidationParameters
+            .AddCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.None; // Ne pas forcer HTTPS pour le développement
+            })
+        .AddOpenIdConnect(options =>
+            {
+                var azureAd = config.GetSection("AzureAd");
+                options.ClientId = azureAd["ClientId"];
+                options.ClientSecret = azureAd["ClientSecret"];
+                options.Authority = $"https://login.microsoftonline.com/{azureAd["TenantId"]}/v2.0";
+                options.ResponseType = "code"; // Utiliser le code d'autorisation
+
+                options.SaveTokens = true; // Enregistrer les tokens
+                options.CallbackPath = azureAd["CallbackPath"];
+
+                // Les événements peuvent être configurés ici si nécessaire
+                options.Events = new OpenIdConnectEvents
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings["Issuer"],
-                    ValidAudience = jwtSettings["Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"] ?? throw new ArgumentNullException("SecretKey")))
+                    OnRedirectToIdentityProvider = context =>
+                    {
+                        // Vous pouvez ajouter des logiques ici si nécessaire
+                        return Task.CompletedTask;
+                    }
                 };
             });
-            return service;
+
+
+        return service;
         }
 
     }
