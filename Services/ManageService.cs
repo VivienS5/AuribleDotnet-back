@@ -13,7 +13,7 @@ namespace Aurible.Services
 
         public Book? GetBookById(int id)
         {
-            return _context.Book.FirstOrDefault(b => b.Id == id);
+            return _context.Books.FirstOrDefault(b => b.idBook == id);
         }
 
     public void AddBook(BookDto bookDto)
@@ -27,7 +27,7 @@ namespace Aurible.Services
             maxPage = bookDto.maxPage,
             author = bookDto.author
         };
-            _context.Book.Add(book); 
+            _context.Books.Add(book); 
             _context.SaveChanges();
     }
         
@@ -35,7 +35,7 @@ namespace Aurible.Services
         public void UpdateBook(Book book)
         {
             // Vérifie si le livre existe déjà dans la base de données
-            var existingBook = GetBookById(book.Id);
+            var existingBook = GetBookById(book.idBook);
             if (existingBook != null)
             {
                         existingBook.title = book.title;
@@ -54,7 +54,7 @@ namespace Aurible.Services
             var book = GetBookById(id);
             if (book != null)
             {
-                _context.Book.Remove(book); // Supprime le livre de la DbContext
+                _context.Books.Remove(book); // Supprime le livre de la DbContext
                 _context.SaveChanges(); // Sauvegarde les modifications
             }
         }

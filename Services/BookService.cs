@@ -16,12 +16,12 @@ namespace Aurible.Services
 
         public IEnumerable<Book> GetAllBooks()
         {
-            return _context.Book.ToList(); // Récupère tous les livres de la base de données
+            return _context.Books.ToList(); // Récupère tous les livres de la base de données
         }
 
         public Book? GetBookById(int id)
         {
-            return _context.Book.FirstOrDefault(b => b.Id == id);
+            return _context.Books.FirstOrDefault(b => b.idBook == id);
         }
     }
 }

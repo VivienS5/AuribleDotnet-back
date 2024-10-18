@@ -1,6 +1,7 @@
 using System.Text;
 using Aurible.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +34,18 @@ builder.Services.AddCors(options =>
 // Ajouter les services de l'application
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IManageService, ManageService>();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 // Configurer le DbContext pour utiliser PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Health Checks
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -69,5 +78,8 @@ app.UseAuthentication(); // Si vous utilisez une authentification
 app.UseAuthorization();  // Nécessaire pour les contrôleurs
 
 app.MapControllers(); // Mapper les contrôleurs
+
+// Add Health Checks endpoint
+app.MapHealthChecks("/health");
 
 app.Run(); // Lancer l'application
