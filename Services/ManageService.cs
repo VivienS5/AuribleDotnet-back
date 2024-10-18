@@ -1,35 +1,51 @@
-using System.Collections.Generic;
-using System.Linq;
 using Aurible.Models;
 
 namespace Aurible.Services
 {
     public class ManageService : IManageService
     {
-        private static List<Book> _books = new List<Book>();
+        private readonly ApplicationDbContext _context;
+
+        public ManageService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public Book? GetBookById(int id)
         {
-            return _books.FirstOrDefault(b => b.Id == id);
+            return _context.Book.FirstOrDefault(b => b.Id == id);
         }
 
-        public void AddBook(Book book)
+    public void AddBook(BookDto bookDto)
+    {
+        var book = new Book
         {
-            book.Id = _books.Count + 1; // Simple génération d'ID
-            _books.Add(book);
-        }
+            title = bookDto.title,
+            resume = bookDto.resume,
+            coverURL = bookDto.coverURL,
+            audioPath = bookDto.audioPath,
+            maxPage = bookDto.maxPage,
+            author = bookDto.author
+        };
+            _context.Book.Add(book); 
+            _context.SaveChanges();
+    }
+        
 
         public void UpdateBook(Book book)
         {
+            // Vérifie si le livre existe déjà dans la base de données
             var existingBook = GetBookById(book.Id);
             if (existingBook != null)
             {
-                existingBook.title = book.title;
-                existingBook.resume = book.resume;
-                existingBook.coverURL = book.coverURL;
-                existingBook.audioPath = book.audioPath;
-                existingBook.maxPage = book.maxPage;
-                existingBook.author = book.author;
+                        existingBook.title = book.title;
+                        existingBook.resume = book.resume;
+                        existingBook.coverURL = book.coverURL;
+                        existingBook.audioPath = book.audioPath;
+                        existingBook.maxPage = book.maxPage;
+                        existingBook.author = book.author;
+
+                _context.SaveChanges();
             }
         }
 
@@ -38,8 +54,14 @@ namespace Aurible.Services
             var book = GetBookById(id);
             if (book != null)
             {
-                _books.Remove(book);
+                _context.Book.Remove(book); // Supprime le livre de la DbContext
+                _context.SaveChanges(); // Sauvegarde les modifications
             }
+        }
+
+        public void AddBook(Book book)
+        {
+            throw new NotImplementedException();
         }
     }
 }
