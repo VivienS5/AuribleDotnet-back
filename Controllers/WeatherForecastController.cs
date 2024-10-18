@@ -5,7 +5,7 @@ namespace AuribleDotnet_back.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+[Authorize(Policy = "AuthZPolicy")]
 public class WeatherForecastController : ControllerBase
 {
     private static readonly string[] Summaries = new[]

@@ -65,7 +65,6 @@ else
 app.UseHttpsRedirection();
 // Activer CORS
 app.UseCors("AllowAllOrigins");
-app.UseSession();
 // Optionnel : Activer l'authentification et l'autorisation JWT
 app.UseAuthentication();
 app.UseAuthorization();
