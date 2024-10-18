@@ -1,11 +1,15 @@
 using AuribleDotnet_back.Interface;
 using AuribleDotnet_back.Service.AuthServices;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 // Add CORS services
 builder.Services.AddCors(options =>
 {
@@ -20,25 +24,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IJwtTokenService, JWTService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
 builder.Services.ConfigurationAuth(builder.Configuration);
-// builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration.GetSection("AzureAd"));
-// Optionnel : Ajouter authentification JWT si nécessaire
-// builder.Services.AddAuthentication("Bearer")
-//     .AddJwtBearer("Bearer", options =>
-//     {
-//         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//         {
-//             ValidateIssuer = true,
-//             ValidateAudience = true,
-//             ValidateLifetime = true,
-//             ValidateIssuerSigningKey = true,
-//             ValidIssuer = "ton_issuer",
-//             ValidAudience = "ton_audience",
-//             IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-//                 System.Text.Encoding.UTF8.GetBytes("ta_clé_secrète_super_sécurisée"))
-//         };
-//     });
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -77,12 +63,11 @@ else
 }
 
 app.UseHttpsRedirection();
-
 // Activer CORS
 app.UseCors("AllowAllOrigins");
-
+app.UseSession();
 // Optionnel : Activer l'authentification et l'autorisation JWT
-app.UseAuthentication(); // JWT, si nécessaire
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

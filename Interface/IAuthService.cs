@@ -5,7 +5,5 @@ namespace AuribleDotnet_back.Interface
         void SignOut();
         void Register();
         void CheckUser();
-        void ExchangeToAccessToken();
-        string AzureUrl();
     }    
 }

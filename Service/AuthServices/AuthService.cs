@@ -46,17 +46,6 @@ namespace AuribleDotnet_back.Service.AuthServices{
                 return null;
             }
         }
-        public string AzureUrl(){
-            var tenant = _configuration["AzureAd:TenantId"];
-            var clientId = _configuration["AzureAd:ClientId"];
-            var redirectUri = _configuration["AzureAd:RedirectUri"] ?? throw new ArgumentNullException("AzureAd:RedirectUri");
-            var state =  Guid.NewGuid().ToString();
-            var scope = "openid profile email";
-            var azureAdUrl = $"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?" +
-                         $"client_id={clientId}&response_type=code&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
-                         $"&response_mode=query&scope={Uri.EscapeDataString(scope)}&state={state}";
-            return azureAdUrl;
-        }
         public void SignOut(){
 
         }
