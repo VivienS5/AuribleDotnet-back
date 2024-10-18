@@ -32,6 +32,7 @@ builder.Services.AddCors(options =>
 
 // Ajouter les services de l'application
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IManageService, ManageService>();
 
 // Configurer le DbContext pour utiliser PostgreSQL
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
