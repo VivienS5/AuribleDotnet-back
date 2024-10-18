@@ -9,5 +9,7 @@ namespace Aurible.Models
         public string? audioPath { get; set; }
         public int? maxPage { get; set; }
         public string? author { get; set; }
+
+        public ICollection<Chapter>? Chapters { get; set; }
     }
 }
