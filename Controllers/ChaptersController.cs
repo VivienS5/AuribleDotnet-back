@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Pour inclure la navigation property
+using Microsoft.EntityFrameworkCore; 
 using Aurible.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Aurible.Controllers
 {
@@ -17,16 +15,16 @@ namespace Aurible.Controllers
             _context = context;
         }
 
-        // GET: chapters/book/{bookId}
-        [HttpGet("book/{bookId}")]
-        public ActionResult<IEnumerable<Chapter>> GetChaptersByBookId(int bookId)
+        // GET: chapters/book/{idBook}
+        [HttpGet("book/{idBook}")]
+        public ActionResult<IEnumerable<Chapter>> GetChaptersByidBook(int idBook)
         {
             // Récupérer le livre avec les chapitres associés via la propriété de navigation
-            var bookWithChapters = _context.Book
+            var bookWithChapters = _context.Books // Remplacez Book par Books
                 .Include(b => b.Chapters) // Inclure les chapitres associés
-                .FirstOrDefault(b => b.idBook == bookId);
+                .FirstOrDefault(b => b.idBook == idBook);
 
-            if (bookWithChapters == null || bookWithChapters.Chapters == null || bookWithChapters.Chapters.Count == 0)
+            if (bookWithChapters == null || bookWithChapters.Chapters == null || !bookWithChapters.Chapters.Any())
             {
                 return NotFound("Aucun chapitre trouvé pour ce livre.");
             }

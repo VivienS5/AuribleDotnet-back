@@ -10,6 +10,6 @@ namespace Aurible.Models
         public int? maxPage { get; set; }
         public string? author { get; set; }
 
-        public required ICollection<Chapter> Chapters { get; set; }
+        public ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
     }
 }

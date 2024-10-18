@@ -13,7 +13,7 @@ namespace AuribleDotnet_back.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Book",
+                name: "Books",
                 columns: table => new
                 {
                     idBook = table.Column<int>(type: "integer", nullable: false)
@@ -27,11 +27,11 @@ namespace AuribleDotnet_back.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Book", x => x.idBook);
+                    table.PrimaryKey("PK_Books", x => x.idBook);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chapter",
+                name: "Chapters",
                 columns: table => new
                 {
                     idChapter = table.Column<int>(type: "integer", nullable: false)
@@ -39,33 +39,33 @@ namespace AuribleDotnet_back.Migrations
                     chapterTitle = table.Column<string>(type: "text", nullable: true),
                     timecode = table.Column<TimeSpan[]>(type: "interval[]", nullable: true),
                     page = table.Column<int>(type: "integer", nullable: false),
-                    BookidBook = table.Column<int>(type: "integer", nullable: true)
+                    idBook_FK = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chapter", x => x.idChapter);
+                    table.PrimaryKey("PK_Chapters", x => x.idChapter);
                     table.ForeignKey(
-                        name: "FK_Chapter_Book_BookidBook",
-                        column: x => x.BookidBook,
-                        principalTable: "Book",
+                        name: "FK_Chapters_Books_idBook_FK",
+                        column: x => x.idBook_FK,
+                        principalTable: "Books",
                         principalColumn: "idBook",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chapter_BookidBook",
-                table: "Chapter",
-                column: "BookidBook");
+                name: "IX_Chapters_idBook_FK",
+                table: "Chapters",
+                column: "idBook_FK");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Chapter");
+                name: "Chapters");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "Books");
         }
     }
 }

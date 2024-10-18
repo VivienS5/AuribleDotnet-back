@@ -6,6 +6,7 @@ namespace Aurible.Models
         public string? chapterTitle { get; set; }
         public TimeSpan[]? timecode { get; set; }
         public int page { get; set; }
+        public int idBook_FK { get; set; }
         public required Book Book { get; set; }
     }
 }

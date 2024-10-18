@@ -38,6 +38,9 @@ builder.Services.AddScoped<IManageService, ManageService>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Add Health Checks
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // Configurer le pipeline de requêtes HTTP
@@ -69,5 +72,8 @@ app.UseAuthentication(); // Si vous utilisez une authentification
 app.UseAuthorization();  // Nécessaire pour les contrôleurs
 
 app.MapControllers(); // Mapper les contrôleurs
+
+// Add Health Checks endpoint
+app.MapHealthChecks("/health");
 
 app.Run(); // Lancer l'application

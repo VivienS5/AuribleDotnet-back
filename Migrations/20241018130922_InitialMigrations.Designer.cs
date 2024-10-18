@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AuribleDotnet_back.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241018122114_InitialMigrations")]
+    [Migration("20241018130922_InitialMigrations")]
     partial class InitialMigrations
     {
         /// <inheritdoc />
@@ -52,7 +52,7 @@ namespace AuribleDotnet_back.Migrations
 
                     b.HasKey("idBook");
 
-                    b.ToTable("Book");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Aurible.Models.Chapter", b =>
@@ -63,11 +63,11 @@ namespace AuribleDotnet_back.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("idChapter"));
 
-                    b.Property<int?>("BookidBook")
-                        .HasColumnType("integer");
-
                     b.Property<string>("chapterTitle")
                         .HasColumnType("text");
+
+                    b.Property<int>("idBook_FK")
+                        .HasColumnType("integer");
 
                     b.Property<int>("page")
                         .HasColumnType("integer");
@@ -77,17 +77,18 @@ namespace AuribleDotnet_back.Migrations
 
                     b.HasKey("idChapter");
 
-                    b.HasIndex("BookidBook");
+                    b.HasIndex("idBook_FK");
 
-                    b.ToTable("Chapter");
+                    b.ToTable("Chapters");
                 });
 
             modelBuilder.Entity("Aurible.Models.Chapter", b =>
                 {
                     b.HasOne("Aurible.Models.Book", "Book")
                         .WithMany("Chapters")
-                        .HasForeignKey("BookidBook")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("idBook_FK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
