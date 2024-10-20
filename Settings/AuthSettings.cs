@@ -9,19 +9,12 @@ namespace AuribleDotnet_back.Service.AuthServices{
     public static class AuthSettings
     {
         public static IServiceCollection ConfigurationAuth(this IServiceCollection service, IConfiguration config){
-            // service.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-            // .AddMicrosoftIdentityWebApp(config, "AzureAd")
-            //     .EnableTokenAcquisitionToCallDownstreamApi(["user.read"])
-            //     .AddMicrosoftGraph(config.GetSection("Graph"))
-            //     .AddDistributedTokenCaches();
-            
-            // service.AddDistributedMemoryCache();
             service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(config, "AzureAd")
-                .EnableTokenAcquisitionToCallDownstreamApi()
-                .AddMicrosoftGraph(config.GetSection("Graph"))
-                .AddInMemoryTokenCaches();            
+                .AddMicrosoftIdentityWebApi(config.GetSection("AzureAd"))
+                .EnableTokenAcquisitionToCallDownstreamApi() 
+                .AddInMemoryTokenCaches(); 
             return service;
+
         }
 
     }

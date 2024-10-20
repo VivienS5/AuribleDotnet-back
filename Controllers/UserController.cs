@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,39 +10,39 @@ namespace AuribleDotnet_back.Controllers
 {
     [ApiController]
     [Route("user")]
-    [Authorize]
-    public class UserController: ControllerBase
+public class UserController : ControllerBase
+{
+
+    public UserController()
     {
-         private readonly IAuthorizationHeaderProvider authorizationHeaderProvider;
-        private readonly ITokenAcquisition _tokenAcquisition;
-        private readonly GraphServiceClient _graphServiceClient;
 
-        public UserController(ITokenAcquisition tokenAcquisition,IAuthorizationHeaderProvider authorizationHeaderProvider, GraphServiceClient graphServiceClient){
-            this.authorizationHeaderProvider = authorizationHeaderProvider;
-            this._graphServiceClient = graphServiceClient;
-            this._tokenAcquisition = tokenAcquisition;
-        }
-        [HttpGet("profile")]
-        public async Task<IActionResult> Profile()
+    }
+
+    [Authorize]
+    [AuthorizeForScopes(Scopes = new[] { "profile","email"})]
+    [HttpGet]
+    public IActionResult GetUserInfo()
+    {
+        var accessToken = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        // Décodez le jeton pour obtenir les claims
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(accessToken);
+
+        // Extraire le nom
+        var name = jwtToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
+        var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+
+        // Vérifiez si le nom existe et renvoyez-le
+        if (name != null)
         {
-            var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { "User.Read" });
-
-            // Créer le client Graph avec le token
-            _graphServiceClient.AuthenticationProvider = new DelegateAuthenticationProvider(
-                requestMessage => {
-                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                    return Task.CompletedTask;
-                });
-            var user = await _graphServiceClient.Me.Request().GetAsync();
-            try
-            {
-                Console.WriteLine(user.DisplayName);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(new { Name = name, Email = email });
+        }
+        else
+        {
+            return NotFound("Le nom n'est pas trouvé dans le jeton.");
         }
     }
+
+    }
+
 }

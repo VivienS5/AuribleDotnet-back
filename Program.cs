@@ -58,6 +58,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "A simple Aurible app",
     });
 });
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
