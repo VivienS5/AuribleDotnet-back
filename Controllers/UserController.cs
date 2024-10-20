@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Graph;
@@ -12,19 +13,29 @@ namespace AuribleDotnet_back.Controllers
     public class UserController: ControllerBase
     {
          private readonly IAuthorizationHeaderProvider authorizationHeaderProvider;
+        private readonly ITokenAcquisition _tokenAcquisition;
         private readonly GraphServiceClient _graphServiceClient;
 
-        public UserController(IAuthorizationHeaderProvider authorizationHeaderProvider, GraphServiceClient graphServiceClient){
+        public UserController(ITokenAcquisition tokenAcquisition,IAuthorizationHeaderProvider authorizationHeaderProvider, GraphServiceClient graphServiceClient){
             this.authorizationHeaderProvider = authorizationHeaderProvider;
             this._graphServiceClient = graphServiceClient;
+            this._tokenAcquisition = tokenAcquisition;
         }
         [HttpGet("profile")]
-        [AuthorizeForScopes(Scopes = ["user.read"])]
         public async Task<IActionResult> Profile()
         {
+            var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { "User.Read" });
+
+            // Créer le client Graph avec le token
+            _graphServiceClient.AuthenticationProvider = new DelegateAuthenticationProvider(
+                requestMessage => {
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                    return Task.CompletedTask;
+                });
+            var user = await _graphServiceClient.Me.Request().GetAsync();
             try
             {
-                var user = await _graphServiceClient.Me.Request().GetAsync();
+                Console.WriteLine(user.DisplayName);
                 return Ok(user);
             }
             catch (Exception ex)

@@ -19,15 +19,8 @@ namespace AuribleDotnet_back.Service.AuthServices{
             service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(config, "AzureAd")
                 .EnableTokenAcquisitionToCallDownstreamApi()
-                .AddMicrosoftGraph(config.GetSection("GraphBeta"))
-                .AddInMemoryTokenCaches();
-            
-
-            service.AddAuthorization(config =>
-            {
-                config.AddPolicy("AuthZPolicy", policyBuilder =>
-                policyBuilder.Requirements.Add(new ScopeAuthorizationRequirement() { RequiredScopesConfigurationKey = $"AzureAd:Scopes" }));
-            });
+                .AddMicrosoftGraph(config.GetSection("Graph"))
+                .AddInMemoryTokenCaches();            
             return service;
         }
 
