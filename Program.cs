@@ -1,10 +1,8 @@
-using System.Text;
 using Aurible.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using AuribleDotnet_back.Interface;
 using AuribleDotnet_back.Service.AuthServices;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,13 +79,13 @@ else
         c.RoutePrefix = "api-docs"; // Changer le chemin pour "/api-docs" en production
     });
 }
-
 app.UseHttpsRedirection();
 // Activer CORS
 app.UseCors("AllowAllOrigins");
 // Optionnel : Activer l'authentification et l'autorisation JWT
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers(); // Mapper les contrôleurs
 

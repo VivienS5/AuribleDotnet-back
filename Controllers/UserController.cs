@@ -18,8 +18,8 @@ public class UserController : ControllerBase
 
     }
 
-    [Authorize]
     [AuthorizeForScopes(Scopes = new[] { "profile","email"})]
+    [Authorize(Policy = "RequireAdminPolicy")]
     [HttpGet]
     public IActionResult GetUserInfo()
     {
@@ -27,15 +27,16 @@ public class UserController : ControllerBase
         // Décodez le jeton pour obtenir les claims
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadJwtToken(accessToken);
-
         // Extraire le nom
         var name = jwtToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
         var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value;
+        var oid = jwtToken.Claims.FirstOrDefault(c => c.Type == "oid")?.Value;
+        // Console.Write all claims
 
         // Vérifiez si le nom existe et renvoyez-le
         if (name != null)
         {
-            return Ok(new { Name = name, Email = email });
+            return Ok(new { Name = name, Email = email, Oid = oid });
         }
         else
         {
