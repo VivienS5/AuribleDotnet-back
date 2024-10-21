@@ -10,6 +10,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Book> Books { get; set; }
     public DbSet<Chapter> Chapters { get; set; }
 
+    public DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Book>()
@@ -17,7 +19,11 @@ public class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Chapter>()
             .HasKey(c => c.idChapter);
-
+        modelBuilder.Entity<User>()
+            .HasKey(u => u.IdUser);
+        modelBuilder.Entity<User>()
+            .Property(u => u.IdUser)
+            .ValueGeneratedOnAdd();
         modelBuilder.Entity<Chapter>()
             .HasOne(c => c.Book)
             .WithMany(b => b.Chapters)

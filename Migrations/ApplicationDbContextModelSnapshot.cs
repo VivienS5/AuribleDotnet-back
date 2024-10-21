@@ -79,6 +79,40 @@ namespace AuribleDotnet_back.Migrations
                     b.ToTable("Chapters");
                 });
 
+            modelBuilder.Entity("Aurible.Models.User", b =>
+                {
+                    b.Property<int>("IdUser")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("IdUser"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("IdMicrosoft")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("integer");
+
+                    b.HasKey("IdUser");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Aurible.Models.Chapter", b =>
                 {
                     b.HasOne("Aurible.Models.Book", "Book")
