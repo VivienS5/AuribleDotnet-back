@@ -3,7 +3,7 @@ using Aurible.Models;
 using Aurible.Services;
 
 [ApiController]
-[Route("manage")]
+[Route("[Controller]")]
 public class ManageController : ControllerBase
 {
     private readonly IManageService _manageService;

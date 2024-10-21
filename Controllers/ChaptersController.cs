@@ -4,7 +4,7 @@ using Aurible.Models;
 
 namespace Aurible.Controllers
 {
-    [Route("chapters")]
+    [Route("[Controller]")]
     [ApiController]
     public class ChaptersController : ControllerBase
     {

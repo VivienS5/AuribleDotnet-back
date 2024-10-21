@@ -4,7 +4,7 @@ using Aurible.Models;
 using Aurible.Services;
 
 [ApiController]
-[Route("book")]
+[Route("[Controller]")]
 public class BookController : ControllerBase
 {
     private readonly IBookService _bookService;
