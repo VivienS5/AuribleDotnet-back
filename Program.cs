@@ -24,6 +24,7 @@ builder.Services.AddCors(options =>
 });
 
 // Ajouter les services de l'application
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IManageService, ManageService>();
 builder.Services.AddControllers()
