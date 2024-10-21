@@ -43,6 +43,7 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddScoped<IJwtTokenService, JWTService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<AudioStreamingService>();
 builder.Services.ConfigurationAuth(builder.Configuration);
 
 
