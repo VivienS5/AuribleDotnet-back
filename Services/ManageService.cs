@@ -16,20 +16,20 @@ namespace Aurible.Services
             return _context.Books.FirstOrDefault(b => b.idBook == id);
         }
 
-    public void AddBook(BookDto bookDto)
-    {
-        var book = new Book
+        public void AddBook(BookDto bookDto)
         {
-            title = bookDto.title,
-            resume = bookDto.resume,
-            coverURL = bookDto.coverURL,
-            audioPath = bookDto.audioPath,
-            maxPage = bookDto.maxPage,
-            author = bookDto.author
-        };
-            _context.Books.Add(book); 
-            _context.SaveChanges();
-    }
+            var book = new Book
+            {
+                title = bookDto.title,
+                resume = bookDto.resume,
+                coverURL = bookDto.coverURL,
+                audioPath = bookDto.audioPath,
+                maxPage = bookDto.maxPage,
+                author = bookDto.author
+            };
+                _context.Books.Add(book); 
+                _context.SaveChanges();
+        }
         
 
         public void UpdateBook(Book book)
@@ -57,11 +57,6 @@ namespace Aurible.Services
                 _context.Books.Remove(book); // Supprime le livre de la DbContext
                 _context.SaveChanges(); // Sauvegarde les modifications
             }
-        }
-
-        public void AddBook(Book book)
-        {
-            throw new NotImplementedException();
         }
     }
 }
