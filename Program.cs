@@ -1,37 +1,74 @@
-using System.Text;
 using Aurible.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using AuribleDotnet_back.Interface;
+using AuribleDotnet_back.Service.AuthServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Ajouter les services au conteneur
 builder.Services.AddControllers();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
-// Ajouter Swagger pour la documentation
+// Ajouter les services de l'application
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IManageService, ManageService>();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
+
+// Configurer le DbContext pour utiliser PostgreSQL
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Add Health Checks
+builder.Services.AddHealthChecks();
+
+builder.Services.AddScoped<IJwtTokenService, JWTService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.ConfigurationAuth(builder.Configuration);
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Aurible",
-        Version = "V0.0.1",
+        Version = "V0.0.0.0.0.0.1",
         Description = "A simple Aurible app",
     });
 });
-
-
-//Services
-builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurer le pipeline de requêtes HTTP
 if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
-        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root.
+        c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root dans l'environnement de développement
     });
 }
 else
@@ -40,15 +77,20 @@ else
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Aurible V0.0.1");
-        c.RoutePrefix = "api-docs"; // Change the route to "/api-docs" in production for better security.
+        c.RoutePrefix = "api-docs"; // Changer le chemin pour "/api-docs" en production
     });
 }
-
 app.UseHttpsRedirection();
+// Activer CORS
 app.UseCors("AllowAllOrigins");
+// Optionnel : Activer l'authentification et l'autorisation JWT
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
 
-app.Run();
+app.MapControllers(); // Mapper les contrôleurs
+
+// Add Health Checks endpoint
+app.MapHealthChecks("/health");
+
+app.Run(); // Lancer l'application
