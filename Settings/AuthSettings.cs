@@ -1,11 +1,9 @@
 
 using System.Security.Claims;
-using System.Text.Json;
 using AuribleDotnet_back.Transformations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AuribleDotnet_back.Service.AuthServices{
     public static class AuthSettings
@@ -16,9 +14,8 @@ namespace AuribleDotnet_back.Service.AuthServices{
                 .EnableTokenAcquisitionToCallDownstreamApi() 
                 .AddInMemoryTokenCaches();
             service.AddScoped<IClaimsTransformation, RoleTransformation>();
-            service.AddAuthorization(options => {
-                options.AddPolicy("RequireAdminPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
-            });
+            service.AddAuthorizationBuilder()
+                .AddPolicy("RequireAdminPolicy", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
             return service;
 
         }

@@ -15,15 +15,6 @@ namespace AuribleDotnet_back.Controllers
         public AuthController(UserService userService){
             _userService = userService;
         }
-        [HttpPost("logout")]
-        [Authorize]
-        public IActionResult Logout(){
-            return Ok();
-        }
-        [HttpGet("callback")]
-        public IActionResult Callback(){
-            return Ok();
-        }
         [HttpGet("login")]
         [Authorize]
         public IActionResult Login(){
