@@ -7,10 +7,10 @@ using Aurible.Services.TTSServices;
 
 //A supprimer 
 PreProcessingService preProcessingService = new PreProcessingService();
-var result =preProcessingService.GetDocument("livre\\mystere.pdf");
+var result =preProcessingService.GetDocument("livre\\burkina_faso.pdf");
 ConvertTTSService convertTTSService = new();
 
-await convertTTSService.StartSynthesizeAudio(result, "test");
+await convertTTSService.StartSynthesizeAudio(result, "burkina_faso");
 var builder = WebApplication.CreateBuilder(args);
 
 // Ajouter les services au conteneur
