@@ -6,18 +6,16 @@ namespace Aurible.Services.TTSServices
 {
     public class PreProcessingService
     {
-        public Dictionary<int,string>? GetDocument(string path){
-            try{
+        public Dictionary<int, string>? GetDocument(string path)
+        {
+            try
+            {
                 using PdfDocument document = PdfDocument.Open(path);
-                var result =SplitPage(document.GetPages());
-                foreach (var page in result)
-                {
-                    Console.WriteLine("Page Number: "+page.Key);
-                    Console.WriteLine(page.Value);
-                }
+                var result = SplitPage(document.GetPages());
                 return result;
             }
-            catch (Exception e){
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
                 return null;
             }
@@ -62,7 +60,7 @@ namespace Aurible.Services.TTSServices
         }
         static List<string> RemoveSpecialCharacter(List<string> words)
         {
-            const string specialCharacterPattern = @"[^a-zA-Z0-9À-ÿ\s'.-]";
+            const string specialCharacterPattern = @"[^a-zA-Z0-9À-ÿ\s'.,-]";
             List<string> filtredWords = [];
             foreach (var word in words)
             {

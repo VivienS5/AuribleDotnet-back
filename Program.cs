@@ -3,14 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using AuribleDotnet_back.Interface;
 using AuribleDotnet_back.Service.AuthServices;
-using Aurible.Services.TTSServices;
 
-//A supprimer 
-PreProcessingService preProcessingService = new PreProcessingService();
-var result =preProcessingService.GetDocument("livre\\burkina_faso.pdf");
-ConvertTTSService convertTTSService = new();
-
-await convertTTSService.StartSynthesizeAudio(result, "burkina_faso");
 var builder = WebApplication.CreateBuilder(args);
 
 // Ajouter les services au conteneur
@@ -33,6 +26,8 @@ builder.Services.AddCors(options =>
 // Ajouter les services de l'application
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IChapterService, ChapterDbService>();
+builder.Services.AddScoped<TTSService>();
 builder.Services.AddScoped<IManageService, ManageService>();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

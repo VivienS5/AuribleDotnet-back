@@ -1,4 +1,5 @@
 using System.Text;
+using Aurible.Models;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Audio;
 
@@ -6,27 +7,30 @@ namespace Aurible.Services.TTSServices
 {
     public class ConvertTTSService
     {
-        private readonly string speechKey = "EYuvdMB2VCE50nDHwuhyMWeN6prRXIW9zsQx105wf1o4eX4Wcjk1JQQJ99AJAC5RqLJXJ3w3AAAYACOGvT56";
+        private readonly string speechKey = "";
         private readonly string serviceRegion = "westeurope";
         private readonly string speechSynthesisVoiceName = "fr-FR-DeniseNeural";
         private readonly string speechSynthesisLanguage = "fr-FR";
-        private readonly string audioOutput = "C:\\Users\\Guillaume\\Documents\\Informatique\\AuribleDotnet-back\\audio";
+        private readonly string audioOutput = "audio";
+        private readonly List<ChapterTTS> chapters = [];
         public ConvertTTSService(){
 
         }
-        public async Task StartSynthesizeAudio(Dictionary<int,string>? books,string title){
+        public async Task<List<ChapterTTS>?> StartSynthesizeAudio(Dictionary<int,string>? books,string title){
             if(books == null){
                 Console.WriteLine("Le livre est vide");
-                return;
+                return null;
             }
             string ssml = GenerateSSML(books);
             await SynthesizeAudioAsync(ssml, title);
+            return chapters;
         }
         private SpeechSynthesizer config(string title){
             var speechConfig= SpeechConfig.FromSubscription(speechKey, serviceRegion);
             speechConfig.SpeechSynthesisLanguage = speechSynthesisLanguage;
             speechConfig.SpeechSynthesisVoiceName = speechSynthesisVoiceName;
-            var absolutePath = Path.GetFullPath(Path.Combine(audioOutput, title + ".wav"));
+            speechConfig.SetSpeechSynthesisOutputFormat(SpeechSynthesisOutputFormat.Audio24Khz48KBitRateMonoMp3);
+            var absolutePath = Path.GetFullPath(Path.Combine(audioOutput, title + ".mp3"));
             using var audioConfig = AudioConfig.FromWavFileOutput(absolutePath);
             var speechSynthesiszer = new SpeechSynthesizer(speechConfig, audioConfig);
             return speechSynthesiszer;
@@ -40,6 +44,7 @@ namespace Aurible.Services.TTSServices
                 return;
             }
             speechSynthesiszer.BookmarkReached  += (s,e) => {
+                chapters.Add(AddChapters(e.AudioOffset, e.Text));
                 Console.WriteLine($"Bookmark reached: {e.Text}, Audio offset: {e.AudioOffset / 10000} ms");
             };
             speechSynthesiszer.SynthesisStarted += (s,e) => {
@@ -69,6 +74,12 @@ namespace Aurible.Services.TTSServices
             ssmlBuilder.AppendLine("</voice>");
             ssmlBuilder.AppendLine("</speak>");
             return ssmlBuilder.ToString();
+        }
+        static ChapterTTS AddChapters(ulong time, string bookmark){
+            return new (){
+                Timecode = ((int)time) / 10000,
+                Page = int.Parse(bookmark)
+            };
         }
     }
 }

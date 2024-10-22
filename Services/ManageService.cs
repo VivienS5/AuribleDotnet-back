@@ -5,10 +5,15 @@ namespace Aurible.Services
     public class ManageService : IManageService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IChapterService _chapterService;
+        private readonly TTSService _ttsService;
+        private delegate List<Chapter> GetChapters();
 
-        public ManageService(ApplicationDbContext context)
+        public ManageService(ApplicationDbContext context,IChapterService chapterDbService,TTSService ttsService)
         {
             _context = context;
+            _chapterService = chapterDbService;
+            _ttsService = ttsService;
         }
 
         public Book? GetBookById(int id)
@@ -23,12 +28,12 @@ namespace Aurible.Services
                 title = bookDto.title,
                 resume = bookDto.resume,
                 coverURL = bookDto.coverURL,
-                audioPath = bookDto.audioPath,
-                maxPage = bookDto.maxPage,
                 author = bookDto.author
             };
-                _context.Books.Add(book); 
-                _context.SaveChanges();
+            string file_path = "livre/romance_tragique.pdf";
+            Book newBook =  _context.Books.Add(book).Entity; 
+            _context.SaveChanges();
+            Task.Run(() => _ttsService.UploadBook(file_path,newBook.idBook,OnChapterAdded));
         }
         
 
@@ -57,6 +62,16 @@ namespace Aurible.Services
                 _context.Books.Remove(book); // Supprime le livre de la DbContext
                 _context.SaveChanges(); // Sauvegarde les modifications
             }
+        }
+        public void OnChapterAdded(List<ChapterTTS> chapters,int idBook)
+        {
+            Console.WriteLine("Chapters added: "+idBook);
+            Book? book = _context.Books.Find(idBook);
+            if(book == null) return;
+            _chapterService.Add(chapters,book);
+            book.audioPath = $"audio/{idBook}.mp3";
+            _context.Books.Update(book);
+             _context.SaveChanges();
         }
     }
 }
