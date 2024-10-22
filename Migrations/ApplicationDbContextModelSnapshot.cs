@@ -91,18 +91,12 @@ namespace AuribleDotnet_back.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime?>("ExpirationDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("IdMicrosoft")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RefreshToken")
                         .HasColumnType("text");
 
                     b.Property<int>("Role")

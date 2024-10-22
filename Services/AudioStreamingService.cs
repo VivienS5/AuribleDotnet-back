@@ -22,14 +22,15 @@ namespace Aurible.Services
 
         public FileStreamResult? GetAudioStreamingById(int id)
         {
-            string? path = _context.Books.Where(book => book.idBook == id).Select(book => book.audioPath).First();
-            if (path == null)
+            string? path = _context.Books.Where(book => book.idBook == id).Select(book => book.audioPath).FirstOrDefault();
+            if (path == null || !File.Exists(path))
             {
                 return null;
             }
             var stream = new FileStream(path, FileMode.Open, FileAccess.Read);
 
-            return new FileStreamResult(stream, "audio/mpeg"){
+            return new FileStreamResult(stream, "audio/mpeg")
+            {
                 EnableRangeProcessing = true,
             };
         }

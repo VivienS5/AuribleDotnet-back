@@ -19,7 +19,7 @@ namespace AuribleDotnet_back.Controllers
             var audioStream = _audioStreaminService.GetAudioStreamingById(bookId);
             if (audioStream == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Audio not found" });
             }
 
             return audioStream;
