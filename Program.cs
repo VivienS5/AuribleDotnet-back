@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using AuribleDotnet_back.Interface;
 using AuribleDotnet_back.Service.AuthServices;
+using Aurible.Services.TTSServices;
 
+PreProcessingService preProcessingService = new PreProcessingService();
+preProcessingService.GetDocument("livre\\mystere.pdf");
 var builder = WebApplication.CreateBuilder(args);
 
 // Ajouter les services au conteneur
