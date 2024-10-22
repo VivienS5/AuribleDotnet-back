@@ -5,8 +5,12 @@ using AuribleDotnet_back.Interface;
 using AuribleDotnet_back.Service.AuthServices;
 using Aurible.Services.TTSServices;
 
+//A supprimer 
 PreProcessingService preProcessingService = new PreProcessingService();
-preProcessingService.GetDocument("livre\\mystere.pdf");
+var result =preProcessingService.GetDocument("livre\\mystere.pdf");
+ConvertTTSService convertTTSService = new();
+
+await convertTTSService.StartSynthesizeAudio(result, "test");
 var builder = WebApplication.CreateBuilder(args);
 
 // Ajouter les services au conteneur

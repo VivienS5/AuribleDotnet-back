@@ -6,7 +6,7 @@ namespace Aurible.Services.TTSServices
 {
     public class PreProcessingService
     {
-        public void GetDocument(string path){
+        public Dictionary<int,string>? GetDocument(string path){
             try{
                 using PdfDocument document = PdfDocument.Open(path);
                 var result =SplitPage(document.GetPages());
@@ -15,9 +15,11 @@ namespace Aurible.Services.TTSServices
                     Console.WriteLine("Page Number: "+page.Key);
                     Console.WriteLine(page.Value);
                 }
+                return result;
             }
             catch (Exception e){
                 Console.WriteLine(e.Message);
+                return null;
             }
         }
         public Dictionary<int,string> SplitPage(IEnumerable<Page> pages){
