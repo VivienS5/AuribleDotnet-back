@@ -23,18 +23,28 @@ namespace AuribleDotnet_back.Service.AuthServices
             }
         }
         public bool HasExist(string id){
-            int user = _context.Users.Where(u => u.IdMicrosoft == id).Select(u => u.IdUser).First();
-            if(user > 0){
-                return true;
+            try{
+                int user = _context.Users.Where(u => u.IdMicrosoft == id).Select(u => u.IdUser).FirstOrDefault();
+                if(user > 0){
+                    return true;
+                }
+                return false;
+            }catch(Exception e){
+                Console.WriteLine(e);
+                return false;
             }
-            return false;
         }
         public bool IsAdmin(string id){
-            int role = _context.Users.Where(u => u.IdMicrosoft == id).Select(u => u.Role).First();
-            if(role == 1){
-                return true;
-            }
+            try{
+                int role = _context.Users.Where(u => u.IdMicrosoft == id).Select(u => u.Role).FirstOrDefault();
+                if(role == 1){
+                    return true;
+                }
             return false;
+            }catch(Exception e){
+                Console.WriteLine(e);
+                return false;
+            }
         }
     }
 }
