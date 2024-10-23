@@ -25,7 +25,7 @@ public class ManageController : ControllerBase
 
     // POST /manage
     [HttpPost]
-    public IActionResult AddBook([FromForm] BookDto bookDto)
+    public IActionResult AddBook(BookDto bookDto)
     {
         _manageService.AddBook(bookDto);
         return CreatedAtAction(nameof(GetBookById), new { id = bookDto.id }, bookDto);
