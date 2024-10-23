@@ -60,6 +60,7 @@ builder.Services.AddSwaggerGen(options =>
         Version = "V0.0.0.0.0.0.1",
         Description = "A simple Aurible app",
     });
+    
 });
 builder.Services.AddHttpClient();
 

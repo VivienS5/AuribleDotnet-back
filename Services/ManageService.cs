@@ -32,13 +32,18 @@ namespace Aurible.Services
                 coverURL = bookDto.coverURL,
                 author = bookDto.author
             };
-            string file_path = "livre/romance_tragique.pdf";
-            Book newBook =  _context.Books.Add(book).Entity; 
+            _context.Books.Add(book); 
             _context.SaveChanges();
-            Task.Run(() => _ttsService.UploadBook(file_path,newBook.idBook,OnChapterAdded));
         }
-        
-
+        public bool UploadBook(IFormFile formFile,int idBook){
+            var filePath = Path.Combine("livre",formFile.FileName);
+            Book? findBook = _context.Books.Find(idBook);
+            if(findBook == null) return false;
+            using var stream = new FileStream(filePath, FileMode.Create);
+            formFile.CopyTo(stream);
+            Task.Run(() => _ttsService.UploadBook(filePath,findBook.idBook,OnChapterAdded));
+            return true;
+        }
         public void UpdateBook(Book book)
         {
             // Vérifie si le livre existe déjà dans la base de données

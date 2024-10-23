@@ -6,6 +6,7 @@ namespace Aurible.Services
     {
         Book? GetBookById(int id);
         void AddBook(BookDto bookDto);
+        bool UploadBook(IFormFile formFile,int idBook);
         void UpdateBook(Book book);
         void DeleteBook(int id);
     }
