@@ -7,7 +7,7 @@ namespace Aurible.Services.TTSServices
 {
     public class ConvertTTSService
     {
-        private readonly string speechKey = "";
+        private readonly string speechKey = Environment.GetEnvironmentVariable("SPEECH_KEY") ?? "YOUR_SPEECH_KEY";
         private readonly string serviceRegion = "westeurope";
         private readonly string speechSynthesisVoiceName = "fr-FR-DeniseNeural";
         private readonly string speechSynthesisLanguage = "fr-FR";
@@ -39,7 +39,7 @@ namespace Aurible.Services.TTSServices
             Console.WriteLine("Synthèse audio en cours...");
             Console.WriteLine(speechKey);
             var speechSynthesiszer = config(title);
-            if(speechSynthesiszer == null){
+            if(speechSynthesiszer == null || speechKey == "YOUR_SPEECH_KEY"){
                 Console.WriteLine("Erreur lors de la configuration du service de synthèse audio");
                 return;
             }
@@ -55,6 +55,7 @@ namespace Aurible.Services.TTSServices
             };
             speechSynthesiszer.SynthesisCanceled += (s,e) => {
                 Console.WriteLine("Synthèse audio annulée");
+                Console.WriteLine(e.Result.Reason);
             };
             await speechSynthesiszer.SpeakSsmlAsync(texte);
 
@@ -76,8 +77,8 @@ namespace Aurible.Services.TTSServices
             return ssmlBuilder.ToString();
         }
         static ChapterTTS AddChapters(ulong time, string bookmark){
-            return new (){
-                Timecode = ((int)time) / 10000,
+            return new () {
+                Timecode = time / 10000, // Convert offset to seconds
                 Page = int.Parse(bookmark)
             };
         }

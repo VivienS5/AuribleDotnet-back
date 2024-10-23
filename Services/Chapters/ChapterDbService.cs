@@ -21,14 +21,13 @@ namespace Aurible.Services
                     Book = book,
                     chapterTitle = "Chapter: "+chapterTTS.Page,
                     idBook_FK = book.idBook,
-                    idChapter = chapterTTS.Page,
                     page = chapterTTS.Page,
-                    timecode = new TimeSpan(0,0,chapterTTS.Timecode)
+                    timecode = new TimeSpan[] {TimeSpan.FromMilliseconds(chapterTTS.Timecode)}
                 };
                 _context.Chapters.Add(chapter);
                 _context.SaveChanges();
             }catch(Exception e){
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Source+":"+e.Message);
             }
         }
         public void Add(IEnumerable<Chapter> chapters)
@@ -39,22 +38,20 @@ namespace Aurible.Services
         public void Add(IEnumerable<ChapterTTS> chaptersTTS,Book book)
         {
             try{
-                List<Chapter> chapters = [];
+                List<Chapter> chapters = new List<Chapter>();
                 foreach(var chapterTTS in chaptersTTS)
                 {
                     Chapter chapter = new (){
                         Book = book,
                         chapterTitle = "Chapter: "+chapterTTS.Page,
                         idBook_FK = book.idBook,
-                        idChapter = chapterTTS.Page,
                         page = chapterTTS.Page,
-                        timecode = new TimeSpan(0,0,chapterTTS.Timecode)
+                        timecode = new TimeSpan[] {TimeSpan.FromMilliseconds(chapterTTS.Timecode)}
                     };
-                    chapters.Add(chapter);
+                    Add(chapter);
                 }
-                Add(chapters);
             }catch(Exception e){
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Source+":"+e.Message);
             }
 
         }
@@ -80,7 +77,7 @@ namespace Aurible.Services
             if(timecode != null) {
                 return new ChapterTTS(){
                     Page = chapter.page,
-                    Timecode = (int)timecode.Value.TotalSeconds
+                    Timecode = (ulong)timecode[0].Milliseconds
                 };
             }
             return null;

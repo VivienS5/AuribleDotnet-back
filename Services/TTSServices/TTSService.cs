@@ -19,6 +19,8 @@ namespace Aurible.Services
             if(chapterTTs != null){
                 SynthesisCompleted.Invoke(chapterTTs,idbook);
                 Console.WriteLine("Synthesis completed");
+            }else{
+                Console.WriteLine("Synthesis failed");
             }
         }
     }

@@ -8,12 +8,14 @@ namespace Aurible.Services
         private readonly IChapterService _chapterService;
         private readonly TTSService _ttsService;
         private delegate List<Chapter> GetChapters();
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public ManageService(ApplicationDbContext context,IChapterService chapterDbService,TTSService ttsService)
+        public ManageService(ApplicationDbContext context,IChapterService chapterDbService,TTSService ttsService,IServiceScopeFactory serviceScopeFactory)
         {
             _context = context;
             _chapterService = chapterDbService;
             _ttsService = ttsService;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public Book? GetBookById(int id)
@@ -65,13 +67,19 @@ namespace Aurible.Services
         }
         public void OnChapterAdded(List<ChapterTTS> chapters,int idBook)
         {
-            Console.WriteLine("Chapters added: "+idBook);
-            Book? book = _context.Books.Find(idBook);
-            if(book == null) return;
-            _chapterService.Add(chapters,book);
-            book.audioPath = $"audio/{idBook}.mp3";
-            _context.Books.Update(book);
-             _context.SaveChanges();
+            Console.WriteLine("Chapters added: "+chapters.Count);
+            if(chapters.Count == 0) return;
+            Task.Run(() => {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var dbContext =scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var chapterDbService = scope.ServiceProvider.GetRequiredService<IChapterService>();
+                Book? book = dbContext.Books.Find(idBook);
+                if(book == null) return;
+                chapterDbService.Add(chapters,book);
+                book.audioPath = $"audio/{idBook}.mp3";
+                dbContext.Books.Update(book);
+                 dbContext.SaveChanges();
+            });
         }
     }
 }
