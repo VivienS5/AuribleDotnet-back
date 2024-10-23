@@ -49,6 +49,45 @@ namespace AuribleDotnet_back.Service.AuthServices{
         public void SignOut(){
 
         }
+        public void Register(ClaimsPrincipal claims)
+        {
+            // Récupérer les informations de l'utilisateur depuis les claims (par exemple, l'email)
+            var email = claims?.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new Exception("Email not found in claims");
+            }
+
+            // Vérifier si l'utilisateur existe déjà dans la base de données
+            var existingUser = _userRepository.FindByEmail(email);
+            if (existingUser == null)
+            {
+                // Si l'utilisateur n'existe pas, le créer
+                var newUser = new User
+                {
+                    Email = email,
+                    Name = claims.FindFirst(ClaimTypes.Name)?.Value,
+                    Role = "User" // Par défaut, l'utilisateur aura le rôle "User"
+                };
+
+                _userRepository.Create(newUser);
+            }
+        }
+public bool AccessTokenIsValid(string accessToken)
+{
+    try
+    {
+        // Valider le token en utilisant le service JWT
+        var claims = _JWTService.ValidateToken(accessToken);
+        return claims != null;
+    }
+    catch (SecurityTokenException)
+    {
+        return false;
+    }
+}
 
     }
+    
+    
 }
