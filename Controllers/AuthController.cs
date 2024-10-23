@@ -28,7 +28,7 @@ namespace AuribleDotnet_back.Controllers
                 Console.WriteLine("OID: " + nameidentifierClaim);
                 bool exist =_userService.HasExist(nameidentifierClaim);
                 if(exist){
-                    return Ok();
+                    return Ok(new { IsAdmin = _userService.IsAdmin(nameidentifierClaim) });
                 }
                 var claims = HttpContext.User.Claims;
                 var user = new User
@@ -41,7 +41,7 @@ namespace AuribleDotnet_back.Controllers
                 };
                 _userService.CreateUser(user);
 
-                return Ok();
+                return Ok(new { IsAdmin = _userService.IsAdmin(nameidentifierClaim) });
             }catch(Exception e){
                 Console.WriteLine(e);
                 return BadRequest();
