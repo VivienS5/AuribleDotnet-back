@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.10" />
+    <PackageReference Include="Microsoft.CognitiveServices.Speech" Version="1.41.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -19,9 +20,10 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="3.2.2" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="3.2.2" />
     <PackageReference Include="PdfPig" Version="0.1.9" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    <PackageReference Include="System.Speech" Version="9.0.0-rc.2.24473.5" />
   </ItemGroup>
 
 </Project>
