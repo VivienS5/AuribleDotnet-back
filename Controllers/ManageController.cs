@@ -25,10 +25,19 @@ public class ManageController : ControllerBase
 
     // POST /manage
     [HttpPost]
-    public IActionResult AddBook(BookDto bookDto)
+    public IActionResult AddBook([FromForm] BookDto bookDto)
     {
         _manageService.AddBook(bookDto);
         return CreatedAtAction(nameof(GetBookById), new { id = bookDto.id }, bookDto);
+    }
+    [HttpPost("upload/{id}")]
+    public IActionResult UploadBook(IFormFile file, int id){
+        var formatOK = file.FileName.EndsWith(".pdf");
+        if(!formatOK) return BadRequest(new { message = "Format not supported" });
+        if(_manageService.UploadBook(file,id)){
+            return Ok(new { message = "Upload success" });
+        }
+        return NotFound();
     }
 
     [HttpPatch("{id}")]
