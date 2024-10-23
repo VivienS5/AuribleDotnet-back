@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Aurible.Models;
 using Aurible.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
 
 [ApiController]
+[AuthorizeForScopes(Scopes = new[] { "profile","email"})]
+[Authorize(Policy = "RequireAdminPolicy")]
 [Route("[Controller]")]
 public class ManageController : ControllerBase
 {
@@ -27,8 +31,8 @@ public class ManageController : ControllerBase
     [HttpPost]
     public IActionResult AddBook(BookDto bookDto)
     {
-        _manageService.AddBook(bookDto);
-        return CreatedAtAction(nameof(GetBookById), new { id = bookDto.id }, bookDto);
+        Book result = _manageService.AddBook(bookDto);
+        return CreatedAtAction(nameof(GetBookById), new { id = result.idBook }, result);
     }
     [HttpPost("upload/{id}")]
     public IActionResult UploadBook(IFormFile file, int id){

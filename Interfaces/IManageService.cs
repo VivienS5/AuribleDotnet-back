@@ -5,7 +5,7 @@ namespace Aurible.Services
     public interface IManageService
     {
         Book? GetBookById(int id);
-        void AddBook(BookDto bookDto);
+        Book AddBook(BookDto bookDto);
         bool UploadBook(IFormFile formFile,int idBook);
         void UpdateBook(Book book);
         void DeleteBook(int id);
