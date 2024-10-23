@@ -9,4 +9,9 @@ namespace Aurible.Models
         public int idBook_FK { get; set; }
         public required Book Book { get; set; }
     }
+    public class ChapterTTS
+    {
+        public required ulong Timecode { get; set; }
+        public required int Page { get; set; }
+    }
 }

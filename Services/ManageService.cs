@@ -5,10 +5,17 @@ namespace Aurible.Services
     public class ManageService : IManageService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IChapterService _chapterService;
+        private readonly TTSService _ttsService;
+        private delegate List<Chapter> GetChapters();
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public ManageService(ApplicationDbContext context)
+        public ManageService(ApplicationDbContext context,IChapterService chapterDbService,TTSService ttsService,IServiceScopeFactory serviceScopeFactory)
         {
             _context = context;
+            _chapterService = chapterDbService;
+            _ttsService = ttsService;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         public Book? GetBookById(int id)
@@ -23,12 +30,12 @@ namespace Aurible.Services
                 title = bookDto.title,
                 resume = bookDto.resume,
                 coverURL = bookDto.coverURL,
-                audioPath = bookDto.audioPath,
-                maxPage = bookDto.maxPage,
                 author = bookDto.author
             };
-                _context.Books.Add(book); 
-                _context.SaveChanges();
+            string file_path = "livre/romance_tragique.pdf";
+            Book newBook =  _context.Books.Add(book).Entity; 
+            _context.SaveChanges();
+            Task.Run(() => _ttsService.UploadBook(file_path,newBook.idBook,OnChapterAdded));
         }
         
 
@@ -57,6 +64,22 @@ namespace Aurible.Services
                 _context.Books.Remove(book); // Supprime le livre de la DbContext
                 _context.SaveChanges(); // Sauvegarde les modifications
             }
+        }
+        public void OnChapterAdded(List<ChapterTTS> chapters,int idBook)
+        {
+            Console.WriteLine("Chapters added: "+chapters.Count);
+            if(chapters.Count == 0) return;
+            Task.Run(() => {
+                using var scope = _serviceScopeFactory.CreateScope();
+                var dbContext =scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var chapterDbService = scope.ServiceProvider.GetRequiredService<IChapterService>();
+                Book? book = dbContext.Books.Find(idBook);
+                if(book == null) return;
+                chapterDbService.Add(chapters,book);
+                book.audioPath = $"audio/{idBook}.mp3";
+                dbContext.Books.Update(book);
+                 dbContext.SaveChanges();
+            });
         }
     }
 }

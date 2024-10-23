@@ -26,6 +26,8 @@ builder.Services.AddCors(options =>
 // Ajouter les services de l'application
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IChapterService, ChapterDbService>();
+builder.Services.AddScoped<TTSService>();
 builder.Services.AddScoped<IManageService, ManageService>();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
