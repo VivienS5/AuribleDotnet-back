@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuribleDotnet_back.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("exemple")]
 public class ExempleController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
