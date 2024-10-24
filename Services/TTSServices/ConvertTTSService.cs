@@ -52,10 +52,12 @@ namespace Aurible.Services.TTSServices
             };
             speechSynthesiszer.SynthesisCompleted += (s,e) => {
                 Console.WriteLine("Synthèse audio terminée");
+                speechSynthesiszer.Dispose();
             };
             speechSynthesiszer.SynthesisCanceled += (s,e) => {
                 Console.WriteLine("Synthèse audio annulée");
                 Console.WriteLine(e.Result.Reason);
+                speechSynthesiszer.Dispose();
             };
             await speechSynthesiszer.SpeakSsmlAsync(texte);
 
@@ -78,7 +80,7 @@ namespace Aurible.Services.TTSServices
         }
         static ChapterTTS AddChapters(ulong time, string bookmark){
             return new () {
-                Timecode = time / 10000, // Convert offset to seconds
+                Timecode =  time,
                 Page = int.Parse(bookmark)
             };
         }

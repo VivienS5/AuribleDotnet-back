@@ -23,7 +23,7 @@ namespace Aurible.Services
             return _context.Books.FirstOrDefault(b => b.idBook == id);
         }
 
-        public void AddBook(BookDto bookDto)
+        public Book AddBook(BookDto bookDto)
         {
             var book = new Book
             {
@@ -32,8 +32,9 @@ namespace Aurible.Services
                 coverURL = bookDto.coverURL,
                 author = bookDto.author
             };
-            _context.Books.Add(book); 
+            Book newBook = _context.Books.Add(book).Entity; 
             _context.SaveChanges();
+            return newBook;
         }
         public bool UploadBook(IFormFile formFile,int idBook){
             var filePath = Path.Combine("livre",formFile.FileName);

@@ -22,7 +22,7 @@ namespace Aurible.Services
                     chapterTitle = "Chapter: "+chapterTTS.Page,
                     idBook_FK = book.idBook,
                     page = chapterTTS.Page,
-                    timecode = new TimeSpan[] {TimeSpan.FromMilliseconds(chapterTTS.Timecode)}
+                    timecode = new TimeSpan[] {TimeSpan.FromMicroseconds(chapterTTS.Timecode)}
                 };
                 _context.Chapters.Add(chapter);
                 _context.SaveChanges();
@@ -46,7 +46,7 @@ namespace Aurible.Services
                         chapterTitle = "Chapter: "+chapterTTS.Page,
                         idBook_FK = book.idBook,
                         page = chapterTTS.Page,
-                        timecode = new TimeSpan[] {TimeSpan.FromMilliseconds(chapterTTS.Timecode)}
+                        timecode = new TimeSpan[] {TimeSpan.FromMicroseconds(chapterTTS.Timecode)}
                     };
                     Add(chapter);
                 }
@@ -77,7 +77,7 @@ namespace Aurible.Services
             if(timecode != null) {
                 return new ChapterTTS(){
                     Page = chapter.page,
-                    Timecode = (ulong)timecode[0].Milliseconds
+                    Timecode = (ulong)timecode[0].Microseconds
                 };
             }
             return null;
